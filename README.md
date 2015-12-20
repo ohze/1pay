@@ -8,6 +8,23 @@
 add to build.sbt:
 `libraryDependencies += "com.sandinh" %% "1pay" % 1payVersion`
 
+### Usage
+1. implement `sd.Uid2Name`, `sd.pay.sms1pay.SmsAddCoin`
+
+2. set `sd.pay.sfs1pay.secret` in your play's `application.conf`
+
+3. define `check` & `charge` actions in your play's Controller
+```
+class Sms @Inject() (sms1Pay: SMS) {
+    def check =  Action.async { implicit req =>
+        sms1Pay.check.map(Ok(_))
+    }
+    def charge =  Action.async { implicit req =>
+        sms1Pay.charge.map(Ok(_))
+    }
+}
+```
+
 ### Changelogs
 see [CHANGES.md](CHANGES.md)
 
