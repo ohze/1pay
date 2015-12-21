@@ -24,14 +24,15 @@ final class SmsResult @Inject() (config: Configuration) {
   @inline private def futJs(sms: String, status: Int = 0) = Future successful toJs(sms, status)
 
   val ErrSignature = futJs("Tin nhan sai cu phap")
-  val OkValid = futJs(s"Tin nhan dung cu phap")
-  val ErrInternal = futJs(s"Giao dich that bai")
-  val ErrProcessed = futJs(s"Tin nhan da duoc xu ly")
+  val OkValid = futJs("Tin nhan dung cu phap", 1)
+  val ErrInternal = futJs("Giao dich that bai")
+  val ErrProcessed = futJs("Tin nhan da duoc xu ly")
   @inline def ErrId(id: Int) = futJs(s"So ID: $id khong hop le")
 
   private val numberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
   def OkCharged(username: String, coinChanged: Long): JsObject = {
-    val msg = s"Ban da nap thanh cong ${numberFormat.format(coinChanged)} Bao vao tai khoan: $username. Chi tiet xem tai: sandinh.com/bank"
+    val s = numberFormat.format(coinChanged)
+    val msg = s"Ban da nap thanh cong $s Bao vao tai khoan: $username. Chi tiet xem tai: sandinh.com/bank"
     toJs(msg, 1)
   }
 }
