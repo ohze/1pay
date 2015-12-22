@@ -4,7 +4,8 @@ lazy val commonSettings = Seq(
   organization := "com.sandinh",
   version := "1.0.3-SNAPSHOT",
   scalaVersion := "2.11.7",
-  scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8", "-Ybackend:GenBCode")
+  scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8", "-Ybackend:GenBCode"),
+  resolvers += "Scalaz Bintray Repo" at "https://dl.bintray.com/scalaz/releases"
 )
 
 lazy val core = project.in(file("core"))
