@@ -16,3 +16,16 @@ services:
 
 before_script:
   - mysql -e 'create database test_db;'
+
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/
+
+script:
+  # Your normal script
+  - sbt ++$TRAVIS_SCALA_VERSION -Dfile.encoding=UTF8 test
+
+  # Tricks to avoid unnecessary cache updates
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
