@@ -54,8 +54,8 @@ class SmsSpec extends PlaySpecification {
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
       (js \ "type").asOpt[String] must beSome("text")
-      (js \ "status").asOpt[Int] must beSome(1)
-      (js \ "sms").asOpt[String] must beSome.which(_.startsWith("Tin nhan dung cu phap."))
+      (js \ "status").asOpt[Int] must beSome(0)
+      (js \ "sms").asOpt[String] must beSome.which(_.startsWith("Tin nhan sai cu phap."))
     }
 
     "check signature error when user id not exist" in new WithApplication {
@@ -73,8 +73,8 @@ class SmsSpec extends PlaySpecification {
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
       (js \ "type").asOpt[String] must beSome("text")
-      (js \ "status").asOpt[Int] must beSome(1)
-      (js \ "sms").asOpt[String] must beSome.which(_.startsWith("Tin nhan dung cu phap."))
+      (js \ "status").asOpt[Int] must beSome(0)
+      (js \ "sms").asOpt[String] must beSome.which(_.startsWith("Tin nhan sai cu phap."))
     }
 
     "check ok" in new WithApplication {
