@@ -1,5 +1,11 @@
 ### Changelogs
 
+##### 1.0.3
++ add example project
++ add many test cases
++ NOTE: we must use parse.anyContent or the body of parsed request will be empty.
+see [example/app/controllers/Sms.scala](example/app/controllers/Sms.scala) 
+
 ##### 1.0.2
 + add sd.util.Romanize with test spec (using scalatest)
 + Romanize username on result sms `SmsResult.OkCharged`
