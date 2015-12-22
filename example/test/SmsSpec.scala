@@ -2,6 +2,7 @@ import play.api.Application
 import play.api.db.DB
 import play.api.test.{ FakeRequest, WithApplication, PlaySpecification }
 import org.apache.commons.codec.digest.HmacUtils.hmacSha256Hex
+import sd.Uid2Name
 
 class SmsSpec extends PlaySpecification {
   "sms1pay" should {
@@ -79,6 +80,9 @@ class SmsSpec extends PlaySpecification {
 
     "check ok" in new WithApplication {
       ensureUser1
+      val uid2Name = app.injector.instanceOf[Uid2Name]
+      uid2Name(1) must beSome("Trần Văn Nguyễn")
+
       val req = FakeRequest(GET, "/1pay/check")
         .withFormUrlEncodedBody(dataWithSign(
           "access_key" -> "access_key",
