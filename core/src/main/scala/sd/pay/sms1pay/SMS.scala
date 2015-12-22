@@ -20,7 +20,11 @@ class SMS @Inject() (forms1pay: Forms1pay, uid2Name: Uid2Name, addCoin: SmsAddCo
   (implicit req: Request[_]): Future[JsObject] = {
     form.bindFromRequest.fold(
       f => {
-        logger.warn(f.errors.map(_.message).mkString("", ";", req.queryString.toString))
+        logger.warn(
+          s"""${f.errors.map(e => e.key + ":" + e.messages.mkString(",")).mkString("FormError: [", ",", "]")}
+             |${req.headers.headers.map { case (k, v) => k + ":" + v }.mkString("Headers: [", ",", "]")}
+             |${req.uri}""".stripMargin
+        )
         ErrSignature
       },
       d => d.uidOpt.fold(ErrSignature) { uid =>
