@@ -7,3 +7,12 @@ scala:
 
 jdk:
 - oraclejdk8
+
+addons:
+  mariadb: '10.1'
+
+services:
+  - mysql
+
+before_script:
+  - mysql -e 'create database test_db;'

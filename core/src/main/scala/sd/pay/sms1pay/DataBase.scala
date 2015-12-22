@@ -9,7 +9,7 @@ trait DataBase {
     val s = mo_message.trim
     s.lastIndexOf(" ") match {
       case -1 => None
-      case i  => Try { s.substring(i + 1).toInt }.toOption
+      case i => Try { s.substring(i + 1).toInt }.toOption
     }
   }
 }

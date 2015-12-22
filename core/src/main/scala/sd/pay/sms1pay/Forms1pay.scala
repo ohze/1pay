@@ -1,6 +1,6 @@
 package sd.pay.sms1pay
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import play.api.Configuration
 import play.api.data._
 import play.api.data.Forms._
@@ -12,9 +12,9 @@ class Forms1pay @Inject() (config: Configuration) {
   private val text0 = default(text, "0")
 
   /** Mệnh giá 100.000VNĐ chỉ áp dụng đối với mạng Viettel và Mobifone
-    *
-    * @see http://developers.1pay.vn/http-apis/smsplus-charging
-    */
+   *
+   * @see http://developers.1pay.vn/http-apis/smsplus-charging
+   */
   private val amount = number(1000, 100000)
 
   val formCharge = Form(mapping(

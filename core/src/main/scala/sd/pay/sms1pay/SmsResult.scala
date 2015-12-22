@@ -2,9 +2,9 @@ package sd.pay.sms1pay
 
 import java.text.NumberFormat
 import java.util.Locale
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import play.api.Configuration
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{ JsObject, Json }
 import sd.util.Romanize
 import scala.concurrent.Future
 

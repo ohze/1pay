@@ -1,0 +1,7 @@
+# --- !Ups
+CREATE TABLE IF NOT EXISTS users (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	coin bigint(20) NOT NULL,
+  username VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
