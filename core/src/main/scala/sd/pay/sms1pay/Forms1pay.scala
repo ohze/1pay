@@ -11,7 +11,8 @@ class Forms1pay @Inject() (config: Configuration) {
 
   private val text0 = default(text, "0")
 
-  /** Mệnh giá 100.000VNĐ chỉ áp dụng đối với mạng Viettel và Mobifone
+  /**
+   * Mệnh giá 100.000VNĐ chỉ áp dụng đối với mạng Viettel và Mobifone
    *
    * @see http://developers.1pay.vn/http-apis/smsplus-charging
    */
