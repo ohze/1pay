@@ -28,7 +28,8 @@ lazy val example = project.in(file("example"))
       "com.sandinh"           %% "subfolder-evolutions"     % "2.4.3"  % Test,
       specs2 % Test
     ),
-    routesGenerator := InjectedRoutesGenerator
+    routesGenerator := InjectedRoutesGenerator,
+    publishArtifact := false
   ).dependsOn(core)
 
 lazy val root = project.in(file("."))
