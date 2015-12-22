@@ -1,12 +1,9 @@
-import play.api.Application
-import play.api.db.DB
 import play.api.test.{ FakeRequest, WithApplication, PlaySpecification }
-import org.apache.commons.codec.digest.HmacUtils.hmacSha256Hex
 import sd.Uid2Name
 
-class SmsSpec extends PlaySpecification {
-  "sms1pay" should {
-    "check signature error when the Form not contain enough data" in new WithApplication {
+class SmsCheckSpec extends PlaySpecification {
+  "/1pay/check" should {
+    "signature error when the Form not contain enough data" in new WithApplication {
       val req = FakeRequest(GET, "/1pay/check")
         .withFormUrlEncodedBody(
           "access_key" -> ""
@@ -20,7 +17,7 @@ class SmsSpec extends PlaySpecification {
       (js \ "sms").asOpt[String] must beSome.which(_.startsWith("Tin nhan sai cu phap."))
     }
 
-    "check signature error when the signature is not match" in new WithApplication {
+    "signature error when the signature is not match" in new WithApplication {
       val req = FakeRequest(GET, "/1pay/check")
         .withFormUrlEncodedBody(
           "access_key" -> "access_key",
@@ -40,9 +37,9 @@ class SmsSpec extends PlaySpecification {
       (js \ "status").asOpt[Int] must beSome(0)
     }
 
-    "check signature error when can't get uid from mo_message" in new WithApplication {
+    "signature error when can't get uid from mo_message" in new WithApplication {
       val req = FakeRequest(GET, "/1pay/check")
-        .withFormUrlEncodedBody(dataWithSign(
+        .withFormUrlEncodedBody(SignData(
           "access_key" -> "access_key",
           "amount" -> "10000",
           "command_code" -> "GAME1",
@@ -59,13 +56,14 @@ class SmsSpec extends PlaySpecification {
       (js \ "status").asOpt[Int] must beSome(0)
     }
 
-    "check signature error when user id not exist" in new WithApplication {
+    "ErrId when user id not exist" in new WithApplication {
+      val uid = 99999999
       val req = FakeRequest(GET, "/1pay/check")
-        .withFormUrlEncodedBody(dataWithSign(
+        .withFormUrlEncodedBody(SignData(
           "access_key" -> "access_key",
           "amount" -> "10000",
           "command_code" -> "GAME1",
-          "mo_message" -> "MI NAP10 99999999",
+          "mo_message" -> s"MI NAP10 $uid",
           "msisdn" -> "84988888888",
           "telco" -> "vnp"
         ): _*)
@@ -74,17 +72,17 @@ class SmsSpec extends PlaySpecification {
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
       (js \ "type").asOpt[String] must beSome("text")
-      (js \ "sms").asOpt[String] must beSome.which(_.startsWith("Tin nhan sai cu phap."))
+      (js \ "sms").asOpt[String] must beSome.which(_.startsWith(s"So ID: $uid khong hop le."))
       (js \ "status").asOpt[Int] must beSome(0)
     }
 
-    "check ok" in new WithApplication {
-      ensureUser1
+    "ok" in new WithApplication {
+      EnsureUser1.run
       val uid2Name = app.injector.instanceOf[Uid2Name]
       uid2Name(1) must beSome("Trần Văn Nguyễn")
 
       val req = FakeRequest(GET, "/1pay/check")
-        .withFormUrlEncodedBody(dataWithSign(
+        .withFormUrlEncodedBody(SignData(
           "access_key" -> "access_key",
           "amount" -> "10000",
           "command_code" -> "GAME1",
@@ -100,28 +98,5 @@ class SmsSpec extends PlaySpecification {
       (js \ "sms").asOpt[String] must beSome.which(_.startsWith("Tin nhan dung cu phap."))
       (js \ "status").asOpt[Int] must beSome(1)
     }
-  }
-
-  private def ensureUser1(implicit app: Application): Unit = {
-    import anorm._
-    import anorm.SqlParser._
-    DB.withConnection { implicit conn =>
-      SQL"""INSERT INTO users(id, coin, username)
-            VALUES (1, 5000000000, 'Trần Văn Nguyễn')
-            ON DUPLICATE KEY UPDATE coin = 5000000000
-        """.executeUpdate()
-    }
-  }
-
-  private def dataWithSign(d: (String, String)*)(implicit app: Application): Seq[(String, String)] = {
-    val signature = {
-      val text = d.map {
-        case (k, v) => s"$k=$v"
-      }.mkString("&")
-
-      val secret = app.configuration.getString("sd.pay.sfs1pay.secret").get
-      hmacSha256Hex(text, secret)
-    }
-    d :+ ("signature" -> signature)
   }
 }
