@@ -5,6 +5,7 @@ import java.util.Locale
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.libs.json.{JsObject, Json}
+import sd.util.Romanize
 import scala.concurrent.Future
 
 @Singleton
@@ -30,9 +31,10 @@ final class SmsResult @Inject() (config: Configuration) {
   @inline def ErrId(id: Int) = futJs(s"So ID: $id khong hop le")
 
   private val numberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
-  def OkCharged(username: String, coinChanged: Long): JsObject = {
-    val s = numberFormat.format(coinChanged)
-    val msg = s"Ban da nap thanh cong $s Bao vao tai khoan: $username. Chi tiet xem tai: sandinh.com/bank"
+  def OkCharged(username: String, changedCoin: Long): JsObject = {
+    val changed = numberFormat.format(changedCoin)
+    val name = Romanize(username)
+    val msg = s"Ban da nap thanh cong $changed Bao vao tai khoan: $name. Chi tiet xem tai: sandinh.com/bank"
     toJs(msg, 1)
   }
 }
