@@ -1,5 +1,8 @@
 ### Changelogs
 
+##### 1.0.4
+fix critical error: when check signature, use `hmacSha256Hex(secret, s)` instead of `hmacSha256Hex(s, secret)`
+
 ##### 1.0.3
 + add example project
 + add many test cases
