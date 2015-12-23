@@ -37,7 +37,7 @@ case class ChargeData(
 ) extends DataBase {
   def checkSign(secret: String): Boolean = {
     val s = s"access_key=$access_key&amount=$amount&command_code=$command_code&error_code=$error_code&error_message=$error_message&mo_message=$mo_message&msisdn=$msisdn&request_id=$request_id&request_time=$request_time"
-    hmacSha256Hex(s, secret) equalsIgnoreCase signature
+    hmacSha256Hex(secret, s) equalsIgnoreCase signature
   }
   lazy val telco = Phone2Telco(msisdn)
 }

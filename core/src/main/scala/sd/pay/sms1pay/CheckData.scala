@@ -25,6 +25,6 @@ case class CheckData(
 ) extends DataBase {
   def checkSign(secret: String): Boolean = {
     val s = s"access_key=$access_key&amount=$amount&command_code=$command_code&mo_message=$mo_message&msisdn=$msisdn&telco=$telco"
-    hmacSha256Hex(s, secret) equalsIgnoreCase signature
+    hmacSha256Hex(secret, s) equalsIgnoreCase signature
   }
 }

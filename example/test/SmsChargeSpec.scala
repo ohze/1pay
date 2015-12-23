@@ -93,7 +93,7 @@ class SmsChargeSpec extends PlaySpecification {
         SQL"DELETE FROM 1pay_log WHERE request_id = $reqId".execute()
       }
 
-      EnsureUser1.run
+      EnsureUser1.run()
       val uid2Name = app.injector.instanceOf[Uid2Name]
       uid2Name(1) must beSome("Trần Văn Nguyễn")
 

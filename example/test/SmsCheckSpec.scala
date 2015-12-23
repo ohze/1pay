@@ -1,5 +1,6 @@
 import play.api.test.{ FakeRequest, WithApplication, PlaySpecification }
 import sd.Uid2Name
+import sd.pay.sms1pay.{ CheckData, Forms1pay }
 
 class SmsCheckSpec extends PlaySpecification {
   "/1pay/check" should {
@@ -77,7 +78,7 @@ class SmsCheckSpec extends PlaySpecification {
     }
 
     "ok" in new WithApplication {
-      EnsureUser1.run
+      EnsureUser1.run()
       val uid2Name = app.injector.instanceOf[Uid2Name]
       uid2Name(1) must beSome("Trần Văn Nguyễn")
 
@@ -90,6 +91,37 @@ class SmsCheckSpec extends PlaySpecification {
           "msisdn" -> "84988888888",
           "telco" -> "vnp"
         ): _*)
+      val Some(result) = route(req)
+
+      status(result) must equalTo(OK)
+      val js = contentAsJson(result)
+      (js \ "type").asOpt[String] must beSome("text")
+      (js \ "sms").asOpt[String] must beSome.which(_.startsWith("Tin nhan dung cu phap."))
+      (js \ "status").asOpt[Int] must beSome(1)
+    }
+
+    "ok with real data" in new WithApplication {
+      // val signature = "7e53f375e176fe70e45b249094b9b235eabd8213e188cbb9b94cd5f070f88566"
+      val signature = "3c5aa7b2f8254db41fe1cc7d4980003f93316e8adc4271a113bb132c556491ed"
+      SignData.sign(
+        "access_key" -> "4l732pw3tjhzexml8wry",
+        "amount" -> "5000",
+        "command_code" -> "SD",
+        "mo_message" -> "SD NAP 14",
+        "msisdn" -> "84982479988",
+        "telco" -> "vtm"
+      ) must be_==(signature)
+
+      EnsureUser1.run(14, "Kiều Phong")
+      val uid2Name = app.injector.instanceOf[Uid2Name]
+      uid2Name(14) must beSome("Kiều Phong")
+
+      implicit val req = FakeRequest(GET, s"/1pay/check?access_key=4l732pw3tjhzexml8wry&amount=5000&command_code=SD&mo_message=SD+NAP+14&msisdn=84982479988&signature=$signature&telco=vtm")
+      val forms1pay = app.injector.instanceOf[Forms1pay]
+      val form = forms1pay.formCheck.bindFromRequest
+      form.value must beSome[CheckData]
+      form.errors must beEmpty
+
       val Some(result) = route(req)
 
       status(result) must equalTo(OK)
