@@ -11,7 +11,7 @@ add to build.sbt:
 ### Usage
 1. implement `sd.Uid2Name`, `sd.pay.sms1pay.SmsAddCoin`
 
-2. set `sd.pay.sfs1pay.secret` in your play's `application.conf`
+2. set `sd.pay.sms1pay.secret` in your play's `application.conf`
 
 3. define `check` & `charge` actions in your play's Controller
 ```

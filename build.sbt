@@ -2,7 +2,7 @@ import play.core.PlayVersion.{current => playVersion}
 
 lazy val commonSettings = Seq(
   organization := "com.sandinh",
-  version := "1.0.4",
+  version := "2.0.0",
   scalaVersion := "2.11.7",
   scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8", "-Ybackend:GenBCode"),
   resolvers += "Scalaz Bintray Repo" at "https://dl.bintray.com/scalaz/releases"
@@ -15,7 +15,7 @@ lazy val core = project.in(file("core"))
     libraryDependencies ++= Seq(jdbc,
       "com.typesafe.play" %% "play"         % playVersion,
       "com.typesafe.play" %% "anorm"        % "2.5.0",
-      "org.scalatest"     %% "scalatest"    % "3.0.0-M14"   % Test
+      "org.scalatest"     %% "scalatest"    % "3.0.0-M15"   % Test
     )
   )
 

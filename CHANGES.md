@@ -1,5 +1,9 @@
 ### Changelogs
 
+##### 2.0.0
+ONLY change config key:
+`sd.pay.sfs1pay.secret` to `sd.pay.sms1pay.secret`
+
 ##### 1.0.4
 fix critical error: when check signature, use `hmacSha256Hex(secret, s)` instead of `hmacSha256Hex(s, secret)`
 

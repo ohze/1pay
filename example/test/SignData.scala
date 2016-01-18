@@ -7,7 +7,7 @@ object SignData {
       case (k, v) => s"$k=$v"
     }.mkString("&")
 
-    val secret = app.configuration.getString("sd.pay.sfs1pay.secret").get
+    val secret = app.configuration.getString("sd.pay.sms1pay.secret").get
     hmacSha256Hex(secret, text)
   }
 
