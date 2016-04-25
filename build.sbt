@@ -11,10 +11,9 @@ lazy val formatSetting = scalariformPreferences := scalariformPreferences.value
 
 lazy val commonSettings = formatSetting +: Seq(
   organization := "com.sandinh",
-  version := "2.0.1",
+  version := "2.1.0-SNAPSHOT",
   scalaVersion := "2.11.8",
-  scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8", "-Ybackend:GenBCode"),
-  resolvers += "Scalaz Bintray Repo" at "https://dl.bintray.com/scalaz/releases"
+  scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8", "-Ybackend:GenBCode")
 )
 
 lazy val core = project
@@ -23,7 +22,7 @@ lazy val core = project
     name := "1pay",
     libraryDependencies ++= Seq(jdbc,
       "com.typesafe.play" %% "play"         % playVersion,
-      "com.typesafe.play" %% "anorm"        % "2.5.0",
+      "com.typesafe.play" %% "anorm"        % "2.5.1",
       "org.scalatest"     %% "scalatest"    % "3.0.0-M15"   % Test
     )
   )
@@ -35,7 +34,7 @@ lazy val example = project
     name := "example",
     libraryDependencies ++= Seq(cache,
       "mysql"                 %  "mysql-connector-java"     % "5.1.38" % Runtime,
-      "com.sandinh"           %% "subfolder-evolutions"     % "2.4.6"  % Test,
+      "com.sandinh"           %% "subfolder-evolutions"     % "2.5.2"  % Test,
       specs2 % Test
     ),
     routesGenerator := InjectedRoutesGenerator,
