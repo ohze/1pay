@@ -1,5 +1,8 @@
 ### Changelogs
 
+##### 2.1.0
++ update play 2.5.2, anorm 2.5.1
+
 ##### 2.0.1
 + update sbt 0.13.11, scala 2.11.8, play 2.4.6
 
