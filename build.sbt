@@ -1,6 +1,15 @@
 import play.core.PlayVersion.{current => playVersion}
+import scalariform.formatter.preferences._
 
-lazy val commonSettings = Seq(
+lazy val formatSetting = scalariformPreferences := scalariformPreferences.value
+  .setPreference(AlignParameters, true)
+  .setPreference(AlignSingleLineCaseStatements, true)
+  .setPreference(DoubleIndentClassDeclaration, true)
+  .setPreference(MultilineScaladocCommentsStartOnFirstLine, true)
+  .setPreference(PlaceScaladocAsterisksBeneathSecondAsterisk, true)
+  .setPreference(SpacesAroundMultiImports, false)
+
+lazy val commonSettings = formatSetting +: Seq(
   organization := "com.sandinh",
   version := "2.0.1",
   scalaVersion := "2.11.8",
