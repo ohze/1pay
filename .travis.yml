@@ -1,23 +1,20 @@
-# TODO do not require sudo when this issue is fixed:
-# https://github.com/travis-ci/travis-ci/issues/5837
 sudo: required
-
+dist: trusty
 language: scala
 
 scala:
 - 2.11.8
 
-jdk:
-- oraclejdk8
+env:
+- JDK=oraclejdk8
+- JDK=openjdk8
 
 addons:
   mariadb: '10.1'
 
-services:
-  - mysql
-
 before_script:
-  - mysql -e 'create database test_db;'
+  - mysql -u root -e 'create database test_db;'
+  - jdk_switcher use $JDK
 
 script:
   - sbt ++$TRAVIS_SCALA_VERSION test
