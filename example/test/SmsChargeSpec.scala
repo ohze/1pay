@@ -1,5 +1,5 @@
 import play.api.db.DB
-import play.api.test.{ FakeRequest, PlaySpecification, WithApplication }
+import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
 import sd.Uid2Name
 
 class SmsChargeSpec extends PlaySpecification {

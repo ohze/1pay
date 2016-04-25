@@ -1,6 +1,6 @@
-import play.api.test.{ FakeRequest, WithApplication, PlaySpecification }
+import play.api.test.{FakeRequest, WithApplication, PlaySpecification}
 import sd.Uid2Name
-import sd.pay.sms1pay.{ CheckData, Forms1pay }
+import sd.pay.sms1pay.{CheckData, Forms1pay}
 
 class SmsCheckSpec extends PlaySpecification {
   "/1pay/check" should {

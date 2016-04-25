@@ -1,6 +1,6 @@
 package sd.util
 
-import org.scalatest.{ Matchers, FlatSpec }
+import org.scalatest.{Matchers, FlatSpec}
 
 class RomanizeSpec extends FlatSpec with Matchers {
   val R2 = Map(
