@@ -1,4 +1,6 @@
-sudo: false
+# TODO do not require sudo when this issue is fixed:
+# https://github.com/travis-ci/travis-ci/issues/5837
+sudo: required
 
 language: scala
 
