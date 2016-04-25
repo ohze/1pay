@@ -1,5 +1,8 @@
 ### Changelogs
 
+##### 2.0.1
++ update sbt 0.13.11, scala 2.11.8, play 2.4.6
+
 ##### 2.0.0
 ONLY change config key:
 `sd.pay.sfs1pay.secret` to `sd.pay.sms1pay.secret`

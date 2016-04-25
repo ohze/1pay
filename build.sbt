@@ -2,13 +2,13 @@ import play.core.PlayVersion.{current => playVersion}
 
 lazy val commonSettings = Seq(
   organization := "com.sandinh",
-  version := "2.0.0",
-  scalaVersion := "2.11.7",
+  version := "2.0.1",
+  scalaVersion := "2.11.8",
   scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8", "-Ybackend:GenBCode"),
   resolvers += "Scalaz Bintray Repo" at "https://dl.bintray.com/scalaz/releases"
 )
 
-lazy val core = project.in(file("core"))
+lazy val core = project
   .settings(commonSettings: _*)
   .settings(
     name := "1pay",
@@ -19,14 +19,14 @@ lazy val core = project.in(file("core"))
     )
   )
 
-lazy val example = project.in(file("example"))
+lazy val example = project
   .enablePlugins(PlayScala)
   .settings(commonSettings: _*)
   .settings(
     name := "example",
     libraryDependencies ++= Seq(cache,
       "mysql"                 %  "mysql-connector-java"     % "5.1.38" % Runtime,
-      "com.sandinh"           %% "subfolder-evolutions"     % "2.4.3"  % Test,
+      "com.sandinh"           %% "subfolder-evolutions"     % "2.4.6"  % Test,
       specs2 % Test
     ),
     routesGenerator := InjectedRoutesGenerator,
