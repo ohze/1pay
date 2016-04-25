@@ -1,9 +1,9 @@
 package sd.pay.sms1pay
 
-import javax.inject.{ Inject, Singleton }
+import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.db.DB
-import play.api.{ Application, Logger }
+import play.api.{Application, Logger}
 import play.api.libs.json.JsObject
 import play.api.mvc.Request
 import sd.Uid2Name
