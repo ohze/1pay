@@ -41,7 +41,7 @@ lazy val example = project
     publishArtifact := false
   ).dependsOn(core)
 
-lazy val root = project.in(file("."))
+lazy val sms1pay = project.in(file("."))
   .settings(commonSettings: _*)
   .settings(
     name := "root",
