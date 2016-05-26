@@ -16,7 +16,7 @@ class SMS @Inject() (forms1pay: Forms1pay, uid2Name: Uid2Name, addCoin: SmsAddCo
   private[this] val logger = Logger("sms1pay")
   import smsRes._
 
-  private def check[T <: DataBase](form: Form[T])(logic: (Int, String, T) => Future[JsObject]) //uid, username, data
+  private def check[T <: BaseData](form: Form[T])(logic: (Int, String, T) => Future[JsObject]) //uid, username, data
   (implicit req: Request[_]): Future[JsObject] = {
     form.bindFromRequest.fold(
       f => {

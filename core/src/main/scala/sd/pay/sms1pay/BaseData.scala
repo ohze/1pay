@@ -2,7 +2,7 @@ package sd.pay.sms1pay
 
 import scala.util.Try
 
-trait DataBase {
+trait BaseData {
   def mo_message: String
 
   def uidOpt: Option[Int] = {
