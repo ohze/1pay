@@ -23,7 +23,7 @@ lazy val core = project
     libraryDependencies ++= Seq(jdbc,
       "com.typesafe.play" %% "play"         % playVersion,
       "com.typesafe.play" %% "anorm"        % "2.5.1",
-      "org.scalatest"     %% "scalatest"    % "3.0.0-M15"   % Test
+      "org.scalatest"     %% "scalatest"    % "3.0.0-RC1"   % Test
     )
   )
 
@@ -33,7 +33,7 @@ lazy val example = project
   .settings(
     name := "example",
     libraryDependencies ++= Seq(cache,
-      "mysql"                 %  "mysql-connector-java"     % "5.1.38" % Runtime,
+      "mysql"                 %  "mysql-connector-java"     % "5.1.39" % Runtime,
       "com.sandinh"           %% "subfolder-evolutions"     % "2.5.2"  % Test,
       specs2 % Test
     ),
