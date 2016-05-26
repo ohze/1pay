@@ -1,4 +1,5 @@
-import play.api.test.{FakeRequest, WithApplication, PlaySpecification}
+import play.api.db.Database
+import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
 import sd.Uid2Name
 import sd.pay.sms1pay.{CheckData, Forms1pay}
 
@@ -9,7 +10,7 @@ class SmsCheckSpec extends PlaySpecification {
         .withFormUrlEncodedBody(
           "access_key" -> ""
         )
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -29,7 +30,7 @@ class SmsCheckSpec extends PlaySpecification {
           "telco" -> "vnp",
           "signature" -> "invalid signature"
         )
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -48,7 +49,7 @@ class SmsCheckSpec extends PlaySpecification {
           "msisdn" -> "84988888888",
           "telco" -> "vnp"
         ): _*)
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -68,7 +69,7 @@ class SmsCheckSpec extends PlaySpecification {
           "msisdn" -> "84988888888",
           "telco" -> "vnp"
         ): _*)
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -78,8 +79,9 @@ class SmsCheckSpec extends PlaySpecification {
     }
 
     "ok" in new WithApplication {
-      EnsureUser1.run()
+      val db = app.injector.instanceOf[Database]
       val uid2Name = app.injector.instanceOf[Uid2Name]
+      EnsureUser1.run(db)
       uid2Name(1) must beSome("Trần Văn Nguyễn")
 
       val req = FakeRequest(GET, "/1pay/check")
@@ -91,7 +93,7 @@ class SmsCheckSpec extends PlaySpecification {
           "msisdn" -> "84988888888",
           "telco" -> "vnp"
         ): _*)
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -112,7 +114,8 @@ class SmsCheckSpec extends PlaySpecification {
         "telco" -> "vtm"
       ) must be_==(signature)
 
-      EnsureUser1.run(14, "Kiều Phong")
+      val db = app.injector.instanceOf[Database]
+      EnsureUser1.run(db, 14, "Kiều Phong")
       val uid2Name = app.injector.instanceOf[Uid2Name]
       uid2Name(14) must beSome("Kiều Phong")
 
@@ -122,7 +125,7 @@ class SmsCheckSpec extends PlaySpecification {
       form.value must beSome[CheckData]
       form.errors must beEmpty
 
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)

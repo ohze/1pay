@@ -2,8 +2,8 @@ package sd.pay.sms1pay
 
 import javax.inject.{Inject, Singleton}
 import play.api.data.Form
-import play.api.db.DB
-import play.api.{Application, Logger}
+import play.api.db.Database
+import play.api.Logger
 import play.api.libs.json.JsObject
 import play.api.mvc.Request
 import sd.Uid2Name
@@ -12,7 +12,13 @@ import scala.util.Failure
 import play.api.libs.concurrent.Execution.Implicits._
 
 @Singleton
-class SMS @Inject() (forms1pay: Forms1pay, uid2Name: Uid2Name, addCoin: SmsAddCoin, smsRes: SmsResult) {
+class SMS @Inject() (
+    forms1pay: Forms1pay,
+    uid2Name:  Uid2Name,
+    addCoin:   SmsAddCoin,
+    smsRes:    SmsResult,
+    db:        Database
+) {
   private[this] val logger = Logger("sms1pay")
   import smsRes._
 
@@ -35,13 +41,13 @@ class SMS @Inject() (forms1pay: Forms1pay, uid2Name: Uid2Name, addCoin: SmsAddCo
     )
   }
 
-  def check(implicit req: Request[_], app: Application): Future[JsObject] =
+  def check(implicit req: Request[_]): Future[JsObject] =
     check(forms1pay.formCheck) { (_, _, _) =>
       OkValid
     }
 
-  private def chargeLogic(uid: Int, username: String, d: ChargeData)(implicit app: Application): Future[JsObject] =
-    DB.withConnection { implicit conn =>
+  private def chargeLogic(uid: Int, username: String, d: ChargeData): Future[JsObject] =
+    db.withConnection { implicit conn =>
       if (Anorm1pay.exists(d.request_id)) ErrProcessed
       else {
         Anorm1pay.insertLog(d, uid)
@@ -53,7 +59,7 @@ class SMS @Inject() (forms1pay: Forms1pay, uid2Name: Uid2Name, addCoin: SmsAddCo
       }
     }
 
-  def charge(implicit req: Request[_], app: Application): Future[JsObject] =
+  def charge(implicit req: Request[_]): Future[JsObject] =
     check(forms1pay.formCharge) { (uid, username, d) =>
       try chargeLogic(uid, username, d)
       catch {

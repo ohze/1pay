@@ -1,4 +1,4 @@
-import play.api.db.DB
+import play.api.db.Database
 import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
 import sd.Uid2Name
 
@@ -9,7 +9,7 @@ class SmsChargeSpec extends PlaySpecification {
         .withFormUrlEncodedBody(
           "access_key" -> ""
         )
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -32,7 +32,7 @@ class SmsChargeSpec extends PlaySpecification {
           "request_time" -> "2013-07-06T22:54:50Z",
           "signature" -> "invalid signature"
         )
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -54,7 +54,7 @@ class SmsChargeSpec extends PlaySpecification {
           "request_id" -> "request_id",
           "request_time" -> "2013-07-06T22:54:50Z"
         ): _*)
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -77,7 +77,7 @@ class SmsChargeSpec extends PlaySpecification {
           "request_id" -> "request_id",
           "request_time" -> "2013-07-06T22:54:50Z"
         ): _*)
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -88,12 +88,13 @@ class SmsChargeSpec extends PlaySpecification {
 
     "Ok then ErrProcessed" in new WithApplication {
       import anorm._, SqlParser._
+      val db = app.injector.instanceOf[Database]
       val reqId = "request_id_1"
-      DB.withConnection { implicit conn =>
+      db.withConnection { implicit conn =>
         SQL"DELETE FROM 1pay_log WHERE request_id = $reqId".execute()
       }
 
-      EnsureUser1.run()
+      EnsureUser1.run(db)
       val uid2Name = app.injector.instanceOf[Uid2Name]
       uid2Name(1) must beSome("Trần Văn Nguyễn")
 
@@ -111,7 +112,7 @@ class SmsChargeSpec extends PlaySpecification {
           "request_id" -> reqId,
           "request_time" -> "2013-07-06T22:54:50Z"
         ): _*)
-      val Some(result) = route(req)
+      val Some(result) = route(app, req)
 
       status(result) must equalTo(OK)
       val js = contentAsJson(result)
@@ -119,7 +120,7 @@ class SmsChargeSpec extends PlaySpecification {
       (js \ "sms").asOpt[String] must beSome.which(_.startsWith("Ban da nap thanh cong 1.000.000 Bao vao tai khoan: Tran Van Nguyen."))
       (js \ "status").asOpt[Int] must beSome(1)
 
-      val Some(result2) = route(req)
+      val Some(result2) = route(app, req)
 
       status(result2) must equalTo(OK)
       val js2 = contentAsJson(result2)
@@ -127,7 +128,7 @@ class SmsChargeSpec extends PlaySpecification {
       (js2 \ "sms").asOpt[String] must beSome.which(_.startsWith("Tin nhan da duoc xu ly."))
       (js2 \ "status").asOpt[Int] must beSome(0)
 
-      val coin = DB.withConnection { implicit conn =>
+      val coin = db.withConnection { implicit conn =>
         SQL"SELECT coin FROM users WHERE id = $uid".as(scalar[Long].singleOpt)
       }
       coin must beSome(5000000000L + 1000000)

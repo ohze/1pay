@@ -1,19 +1,18 @@
 package sd
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import anorm.SqlParser._
 import anorm._
-import play.api.cache.Cache
-import play.api.db.DB
+import play.api.cache.CacheApi
+import play.api.db.Database
 import scala.concurrent.duration._
-import play.api.Play.current
 
 @Singleton
-class Uid2NameImpl extends Uid2Name {
-  private val Expiry = 2.hours.toSeconds.toInt
+class Uid2NameImpl @Inject() (db: Database, cacheApi: CacheApi) extends Uid2Name {
+  private val Expiry = 2.hours
 
-  def apply(uid: Int): Option[String] = Cache.getOrElse("n" + uid, Expiry)(
-    DB.withConnection { implicit c =>
+  def apply(uid: Int): Option[String] = cacheApi.getOrElse("n" + uid, Expiry)(
+    db.withConnection { implicit c =>
       SQL"SELECT username FROM users WHERE id = $uid"
         .as(scalar[String].singleOpt)
     }

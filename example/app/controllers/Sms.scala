@@ -3,7 +3,6 @@ package controllers
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, Controller}
 import sd.pay.sms1pay.SMS
-import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 @Singleton
