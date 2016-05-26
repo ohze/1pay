@@ -1,4 +1,12 @@
-### Changelogs
+### Changelog
+
+##### 2.2.0
++ update play 2.5.3
++ travis test with oraclejdk8 & openjdk8
++ fix all deprecated warnings
++ break changes:
+    + remove `implicit app: Application` param from some methods of SMS class
+    + rename trait DataBase -> BaseData for better meaning
 
 ##### 2.1.0
 + update play 2.5.2, anorm 2.5.1

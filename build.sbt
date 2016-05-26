@@ -11,7 +11,7 @@ lazy val formatSetting = scalariformPreferences := scalariformPreferences.value
 
 lazy val commonSettings = formatSetting +: Seq(
   organization := "com.sandinh",
-  version := "2.1.0",
+  version := "2.2.0",
   scalaVersion := "2.11.8",
   scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8", "-Ybackend:GenBCode")
 )

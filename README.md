@@ -25,7 +25,7 @@ class Sms @Inject() (sms1Pay: SMS) {
 }
 ```
 
-### Changelogs
+### Changelog
 see [CHANGES.md](CHANGES.md)
 
 ### Licence
