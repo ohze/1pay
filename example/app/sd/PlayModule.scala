@@ -1,8 +1,8 @@
 package sd
 
-import play.api.{ Configuration, Environment }
+import play.api.{Configuration, Environment}
 import play.api.inject.Module
-import sd.pay.sms1pay.{ SmsAddCoin, SmsAddCoinImpl }
+import sd.pay.sms1pay.{SmsAddCoin, SmsAddCoinImpl}
 
 class PlayModule extends Module {
   def bindings(environment: Environment, configuration: Configuration) = Seq(

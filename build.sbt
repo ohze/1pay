@@ -44,6 +44,5 @@ lazy val example = project
 lazy val sms1pay = project.in(file("."))
   .settings(commonSettings: _*)
   .settings(
-    name := "root",
     publishArtifact := false
   ).aggregate(core, example)
