@@ -1,5 +1,11 @@
 ### Changelog
 
+##### 2.3.0
++ update play 2.6.3, sbt 0.13.16
++ cross compile for scala 2.12.3, 2.11.11
++ use sbt-coursier & update sbt plugins
++ use sbt-scalafmt-coursier instead of sbt-scalariform
+
 ##### 2.2.0
 + update play 2.5.3
 + travis test with oraclejdk8 & openjdk8

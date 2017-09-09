@@ -1,3 +1,12 @@
+publishMavenStyle := true
+
+publishTo in Global := Some(
+  if (isSnapshot.value)
+    Opts.resolver.sonatypeSnapshots
+  else
+    Opts.resolver.sonatypeStaging
+)
+
 pomExtra in Global := <url>https://github.com/giabao/1pay</url>
   <licenses>
     <license>

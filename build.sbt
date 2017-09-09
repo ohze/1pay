@@ -1,19 +1,15 @@
 import play.core.PlayVersion.{current => playVersion}
-import scalariform.formatter.preferences._
 
-lazy val formatSetting = scalariformPreferences := scalariformPreferences.value
-  .setPreference(AlignParameters, true)
-  .setPreference(AlignSingleLineCaseStatements, true)
-  .setPreference(DoubleIndentClassDeclaration, true)
-  .setPreference(MultilineScaladocCommentsStartOnFirstLine, true)
-  .setPreference(PlaceScaladocAsterisksBeneathSecondAsterisk, true)
-  .setPreference(SpacesAroundMultiImports, false)
-
-lazy val commonSettings = formatSetting +: Seq(
+lazy val commonSettings = Seq(
   organization := "com.sandinh",
-  version := "2.2.0",
-  scalaVersion := "2.11.8",
-  scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8", "-Ybackend:GenBCode")
+  version := "2.3.0",
+  scalaVersion := "2.12.3",
+  crossScalaVersions := Seq("2.11.11", "2.12.3"),
+  scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8"),
+  scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, 11)) => Seq("-Ybackend:GenBCode")
+    case _ => Nil
+  })
 )
 
 lazy val core = project
@@ -22,8 +18,8 @@ lazy val core = project
     name := "1pay",
     libraryDependencies ++= Seq(jdbc,
       "com.typesafe.play" %% "play"         % playVersion,
-      "com.typesafe.play" %% "anorm"        % "2.5.1",
-      "org.scalatest"     %% "scalatest"    % "3.0.0-RC1"   % Test
+      "com.typesafe.play" %% "anorm"        % "2.5.3",
+      "org.scalatest"     %% "scalatest"    % "3.0.4"   % Test
     )
   )
 
@@ -31,10 +27,9 @@ lazy val example = project
   .enablePlugins(PlayScala)
   .settings(commonSettings: _*)
   .settings(
-    name := "example",
     libraryDependencies ++= Seq(cache,
-      "mysql"                 %  "mysql-connector-java"     % "5.1.39" % Runtime,
-      "com.sandinh"           %% "subfolder-evolutions"     % "2.5.2"  % Test,
+      "mysql"                 %  "mysql-connector-java"     % "5.1.44" % Runtime,
+      evolutions  % Test,
       specs2 % Test
     ),
     routesGenerator := InjectedRoutesGenerator,
