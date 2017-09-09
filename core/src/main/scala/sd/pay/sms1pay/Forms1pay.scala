@@ -7,7 +7,7 @@ import play.api.data.Forms._
 
 @Singleton
 class Forms1pay @Inject() (config: Configuration) {
-  val Secret = config.getString("sd.pay.sms1pay.secret").get
+  val Secret: String = config.get[String]("sd.pay.sms1pay.secret")
 
   private val text0 = default(text, "0")
 

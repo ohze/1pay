@@ -27,7 +27,7 @@ lazy val example = project
   .enablePlugins(PlayScala)
   .settings(commonSettings: _*)
   .settings(
-    libraryDependencies ++= Seq(cache,
+    libraryDependencies ++= Seq(ehcache,
       "mysql"                 %  "mysql-connector-java"     % "5.1.44" % Runtime,
       evolutions  % Test,
       specs2 % Test

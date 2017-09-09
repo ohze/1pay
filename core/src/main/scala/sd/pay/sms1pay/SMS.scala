@@ -1,18 +1,20 @@
 package sd.pay.sms1pay
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.data.Form
 import play.api.db.Database
 import play.api.Logger
 import play.api.libs.json.JsObject
 import play.api.mvc.Request
 import sd.Uid2Name
-import scala.concurrent.Future
+
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Failure
-import play.api.libs.concurrent.Execution.Implicits._
 
 @Singleton
 class SMS @Inject() (
+    implicit ec: ExecutionContext,
     forms1pay: Forms1pay,
     uid2Name:  Uid2Name,
     addCoin:   SmsAddCoin,
