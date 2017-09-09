@@ -1,6 +1,6 @@
 [scala](http://scala-lang.org/)/ [play](https://playframework.com/) library for working with [1pay](http://developers.1pay.vn/http-apis)
 =========================
-[![Build Status](https://travis-ci.org/giabao/1pay.svg)](https://travis-ci.org/giabao/1pay)
+[![Build Status](https://travis-ci.org/ohze/1pay.svg)](https://travis-ci.org/ohze/1pay)
 
 ### Install
 1pay is [published](http://search.maven.org/#search|ga|1|g%3A%22com.sandinh%22%201pay) to maven center.

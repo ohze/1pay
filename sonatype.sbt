@@ -7,7 +7,7 @@ publishTo in Global := Some(
     Opts.resolver.sonatypeStaging
 )
 
-pomExtra in Global := <url>https://github.com/giabao/1pay</url>
+pomExtra in Global := <url>https://github.com/ohze/1pay</url>
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -16,8 +16,8 @@ pomExtra in Global := <url>https://github.com/giabao/1pay</url>
     </license>
   </licenses>
   <scm>
-    <url>git@github.com:giabao/1pay.git</url>
-    <connection>scm:git:git@github.com:giabao/1pay.git</connection>
+    <url>git@github.com:ohze/1pay.git</url>
+    <connection>scm:git:git@github.com:ohze/1pay.git</connection>
   </scm>
   <developers>
     <developer>
