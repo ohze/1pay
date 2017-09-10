@@ -27,9 +27,10 @@ lazy val example = project
   .enablePlugins(PlayScala)
   .settings(commonSettings: _*)
   .settings(
+    resolvers += Resolver.sonatypeRepo("releases"),
     libraryDependencies ++= Seq(ehcache,
       "mysql"                 %  "mysql-connector-java"     % "5.1.44" % Runtime,
-      evolutions  % Test,
+      "com.sandinh"           %% "subfolder-evolutions"     % "2.6.3"  % Test,
       specs2 % Test
     ),
     routesGenerator := InjectedRoutesGenerator,
