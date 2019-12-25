@@ -2,12 +2,12 @@ import play.core.PlayVersion.{current => playVersion}
 
 lazy val commonSettings = Seq(
   organization := "com.sandinh",
-  version := "2.3.0",
-  scalaVersion := "2.12.3",
-  crossScalaVersions := Seq("2.11.11", "2.12.3"),
-  scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-target:jvm-1.8"),
-  scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, 11)) => Seq("-Ybackend:GenBCode")
+  version := "2.4.0-SNAPSHOT",
+  scalaVersion := "2.13.1",
+  crossScalaVersions := Seq("2.13.1", "2.12.10"),
+  scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature"),
+  scalacOptions ++= (CrossVersion.scalaApiVersion(scalaVersion.value) match {
+    case Some((2, 12)) => Seq("-target:jvm-1.8")
     case _ => Nil
   })
 )
@@ -18,8 +18,8 @@ lazy val core = project
     name := "1pay",
     libraryDependencies ++= Seq(jdbc,
       "com.typesafe.play" %% "play"         % playVersion,
-      "com.typesafe.play" %% "anorm"        % "2.5.3",
-      "org.scalatest"     %% "scalatest"    % "3.0.4"   % Test
+      "org.playframework.anorm" %% "anorm"  % "2.6.5",
+      "org.scalatest"     %% "scalatest"    % "3.1.0"   % Test,
     )
   )
 
@@ -29,8 +29,8 @@ lazy val example = project
   .settings(
     resolvers += Resolver.sonatypeRepo("releases"),
     libraryDependencies ++= Seq(ehcache,
-      "mysql"                 %  "mysql-connector-java"     % "5.1.44" % Runtime,
-      "com.sandinh"           %% "subfolder-evolutions"     % "2.6.3"  % Test,
+      "mysql"                 %  "mysql-connector-java"     % "5.1.48" % Runtime,
+      "com.sandinh"           %% "subfolder-evolutions"     % "2.8.0"  % Test,
       specs2 % Test
     ),
     routesGenerator := InjectedRoutesGenerator,

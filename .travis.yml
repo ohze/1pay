@@ -1,21 +1,18 @@
-sudo: required
-dist: trusty
+dist: xenial
 language: scala
 
+jdk:
+  - openjdk8
+  - openjdk11
 scala:
-- 2.12.3
-- 2.11.11
-
-env:
-- JDK=oraclejdk8
-- JDK=openjdk8
+  - 2.12.10
+  - 2.13.1
 
 addons:
   mariadb: '10.2'
 
 before_script:
   - mysql -u root -e 'create database test_db;'
-  - jdk_switcher use $JDK
 
 script:
   - sbt ++$TRAVIS_SCALA_VERSION test
