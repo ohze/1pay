@@ -19,6 +19,7 @@ lazy val core = project
     libraryDependencies ++= Seq(jdbc,
       "com.typesafe.play" %% "play"         % playVersion,
       "org.playframework.anorm" %% "anorm"  % "2.6.5",
+      "commons-codec"     % "commons-codec" % "1.13",
       "org.scalatest"     %% "scalatest"    % "3.1.0"   % Test,
     )
   )
