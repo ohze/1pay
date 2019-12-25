@@ -40,5 +40,6 @@ case class ChargeData(
     val hex = new HmacUtils(HMAC_SHA_256, secret).hmacHex(s)
     hex equalsIgnoreCase signature
   }
-  lazy val telco = Phone2Telco(msisdn)
+  /** @deprecated ứ đúng nữa - giờ VN cho chuyển mạng đổi số :D */
+  lazy val telco: String = Phone2Telco(msisdn)
 }

@@ -15,13 +15,13 @@ object Anorm1pay {
 
   def insertLog(d: ChargeData, uid: Int)(implicit conn: Connection): Unit =
     SqlInsertLog.on(
-      'rid -> d.request_id,
-      'phone -> d.msisdn,
-      'uid -> uid,
-      'status -> d.error_code,
-      'output -> d.toString,
-      'amount -> d.amount,
-      'time -> (currentTimeMillis / 1000).toInt,
-      'type -> d.telco
+      "rid" -> d.request_id,
+      "phone" -> d.msisdn,
+      "uid" -> uid,
+      "status" -> d.error_code,
+      "output" -> d.toString,
+      "amount" -> d.amount,
+      "time" -> (currentTimeMillis / 1000).toInt,
+      "type" -> d.telco
     ).executeInsert()
 }

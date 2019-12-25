@@ -1,8 +1,9 @@
 package sd.util
 
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class RomanizeSpec extends FlatSpec with Matchers {
+class RomanizeSpec extends AnyFlatSpec with Matchers {
   val R2 = Map(
     'À' -> 'A', 'Á' -> 'A', 'Ạ' -> 'A', 'Ả' -> 'A',
     'Ă' -> 'A', 'Â' -> 'A',
@@ -36,7 +37,7 @@ class RomanizeSpec extends FlatSpec with Matchers {
 
   "Romanize" should "have RomanizedChars" in {
     import org.scalatest.PrivateMethodTester._
-    val RomanizedChars = Romanize.invokePrivate(PrivateMethod[Map[Char, Char]]('RomanizedChars)())
+    val RomanizedChars = Romanize.invokePrivate(PrivateMethod[Map[Char, Char]](Symbol("RomanizedChars"))())
     //TODO pls asserting. not just printing
     RomanizedChars.size should be > R2.size
     R2.size shouldBe 104
