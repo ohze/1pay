@@ -1,5 +1,12 @@
 ### Changelog
 
+##### 2.4.0
++ add scala 2.13, drop 2.11
++ update play 2.8, anorm 2.6.5
++ commons-codec as a `1pay`'s dependency
++ update sbt 1.3.5, scalatest 3.1.0
++ deprecate `Phone2Telco`
+
 ##### 2.3.0
 + update play 2.6.3, sbt 0.13.16
 + cross compile for scala 2.12.3, 2.11.11

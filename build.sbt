@@ -2,7 +2,7 @@ import play.core.PlayVersion.{current => playVersion}
 
 lazy val commonSettings = Seq(
   organization := "com.sandinh",
-  version := "2.4.0-SNAPSHOT",
+  version := "2.4.0",
   scalaVersion := "2.13.1",
   crossScalaVersions := Seq("2.13.1", "2.12.10"),
   scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature"),
