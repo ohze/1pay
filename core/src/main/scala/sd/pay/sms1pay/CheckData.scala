@@ -1,6 +1,7 @@
 package sd.pay.sms1pay
 
-import org.apache.commons.codec.digest.HmacUtils.hmacSha256Hex
+import org.apache.commons.codec.digest.HmacUtils
+import org.apache.commons.codec.digest.HmacAlgorithms.HMAC_SHA_256
 
 /** Data of: Kiểm tra cú pháp MO
   *
@@ -24,6 +25,7 @@ case class CheckData(
 ) extends BaseData {
   def checkSign(secret: String): Boolean = {
     val s = s"access_key=$access_key&amount=$amount&command_code=$command_code&mo_message=$mo_message&msisdn=$msisdn&telco=$telco"
-    hmacSha256Hex(secret, s) equalsIgnoreCase signature
+    val hex = new HmacUtils(HMAC_SHA_256, secret).hmacHex(s)
+    hex equalsIgnoreCase signature
   }
 }

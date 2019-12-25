@@ -1,6 +1,7 @@
 package sd.pay.sms1pay
 
-import org.apache.commons.codec.digest.HmacUtils.hmacSha256Hex
+import org.apache.commons.codec.digest.HmacUtils
+import org.apache.commons.codec.digest.HmacAlgorithms.HMAC_SHA_256
 
 /** Data of: Nhận request
   *
@@ -36,7 +37,8 @@ case class ChargeData(
 ) extends BaseData {
   def checkSign(secret: String): Boolean = {
     val s = s"access_key=$access_key&amount=$amount&command_code=$command_code&error_code=$error_code&error_message=$error_message&mo_message=$mo_message&msisdn=$msisdn&request_id=$request_id&request_time=$request_time"
-    hmacSha256Hex(secret, s) equalsIgnoreCase signature
+    val hex = new HmacUtils(HMAC_SHA_256, secret).hmacHex(s)
+    hex equalsIgnoreCase signature
   }
   lazy val telco = Phone2Telco(msisdn)
 }

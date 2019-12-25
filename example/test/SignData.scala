@@ -1,4 +1,5 @@
-import org.apache.commons.codec.digest.HmacUtils.hmacSha256Hex
+import org.apache.commons.codec.digest.HmacUtils
+import org.apache.commons.codec.digest.HmacAlgorithms.HMAC_SHA_256
 import play.api.Application
 
 object SignData {
@@ -8,7 +9,7 @@ object SignData {
     }.mkString("&")
 
     val secret = app.configuration.get[String]("sd.pay.sms1pay.secret")
-    hmacSha256Hex(secret, text)
+    new HmacUtils(HMAC_SHA_256, secret).hmacHex(text)
   }
 
   @inline def apply(d: (String, String)*)(implicit app: Application): Seq[(String, String)] =
