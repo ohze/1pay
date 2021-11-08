@@ -1,45 +1,43 @@
-import play.core.PlayVersion.{current => playVersion}
-
-lazy val commonSettings = Seq(
-  organization := "com.sandinh",
-  version := "2.4.0",
-  scalaVersion := "2.13.1",
-  crossScalaVersions := Seq("2.13.1", "2.12.10"),
-  scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-feature"),
-  scalacOptions ++= (CrossVersion.scalaApiVersion(scalaVersion.value) match {
-    case Some((2, 12)) => Seq("-target:jvm-1.8")
-    case _ => Nil
-  })
-)
-
-lazy val core = project
-  .settings(commonSettings: _*)
+lazy val core = projectMatrix
+  .playAxis(play26, Seq(scala212))
+  .playAxis(play28, Seq(scala212, scala213))
   .settings(
     name := "1pay",
-    libraryDependencies ++= Seq(jdbc,
-      "com.typesafe.play" %% "play"         % playVersion,
-      "org.playframework.anorm" %% "anorm"  % "2.6.5",
-      "commons-codec"     % "commons-codec" % "1.13",
-      "org.scalatest"     %% "scalatest"    % "3.1.0"   % Test,
-    )
+    libraryDependencies ++= Seq(
+      "org.playframework.anorm" %% "anorm" % "2.6.10",
+      "commons-codec" % "commons-codec" % "1.15",
+      "org.scalatest" %% "scalatest" % "3.1.4" % Test,
+    ) ++ play("jdbc").value,
   )
 
+import _root_.play.sbt.PlayImport
 lazy val example = project
   .enablePlugins(PlayScala)
-  .settings(commonSettings: _*)
   .settings(
-    resolvers += Resolver.sonatypeRepo("releases"),
-    libraryDependencies ++= Seq(ehcache,
-      "mysql"                 %  "mysql-connector-java"     % "5.1.48" % Runtime,
-      "com.sandinh"           %% "subfolder-evolutions"     % "2.8.0"  % Test,
-      specs2 % Test
+    skipPublish,
+    libraryDependencies ++= Seq(
+      ehcache,
+      "mysql" % "mysql-connector-java" % "5.1.49" % Runtime,
+      "com.sandinh" %% "subfolder-evolutions" % "2.8.1" % Test,
+      PlayImport.specs2 % Test,
     ),
     routesGenerator := InjectedRoutesGenerator,
-    publishArtifact := false
-  ).dependsOn(core)
+  )
+  .dependsOn(core.finder(play28)(scala212))
 
-lazy val sms1pay = project.in(file("."))
-  .settings(commonSettings: _*)
-  .settings(
-    publishArtifact := false
-  ).aggregate(core, example)
+lazy val sms1pay = (project in file("."))
+  .settings(skipPublish)
+  .aggregate(core.projectRefs :+ (example: ProjectReference): _*)
+
+inThisBuild(
+  Seq(
+    developers := List(
+      Developer(
+        "thanhbv",
+        "Bui Viet Thanh",
+        "thanhbv@sandinh.net",
+        url("https://sandinh.com")
+      ),
+    ),
+  )
+)
