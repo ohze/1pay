@@ -6,7 +6,8 @@ object Romanize {
   private val RomanizedChars: Map[Char, Char] = Map(
     "ÀÁẢÃẠĂẰẮẲẴẶÂẦẤẨẪẬ" -> 'A',
     "àáảãạăằắẳẵặâầấẩẫậ" -> 'a',
-    "Đ" -> 'D', "đ" -> 'd',
+    "Đ" -> 'D',
+    "đ" -> 'd',
     "ÈÉẺẼẸÊỀẾỂỄỆ" -> 'E',
     "èéẻẽẹêềếểễệ" -> 'e',
     "ÌÍỈĨỊ" -> 'I',
@@ -17,9 +18,9 @@ object Romanize {
     "ùúủũụưừứửữự" -> 'u',
     "ỲÝỶỸỴ" -> 'Y',
     "ỳýỷỹỵ" -> 'y'
-  ).foldLeft(mutable.Map.empty[Char, Char]) {
-      case (ret, (s, c)) => s.foreach(k => ret(k) = c); ret
-    }.toMap
+  ).foldLeft(mutable.Map.empty[Char, Char]) { case (ret, (s, c)) =>
+    s.foreach(k => ret(k) = c); ret
+  }.toMap
 
   def apply(s: String) = s.map(c => RomanizedChars.getOrElse(c, c))
 }

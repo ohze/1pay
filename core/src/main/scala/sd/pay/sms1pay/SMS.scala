@@ -13,34 +13,43 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Failure
 
 @Singleton
-class SMS @Inject() (
-    implicit ec: ExecutionContext,
+class SMS @Inject() (implicit
+    ec: ExecutionContext,
     forms1pay: Forms1pay,
-    uid2Name:  Uid2Name,
-    addCoin:   SmsAddCoin,
-    smsRes:    SmsResult,
-    db:        Database
+    uid2Name: Uid2Name,
+    addCoin: SmsAddCoin,
+    smsRes: SmsResult,
+    db: Database
 ) {
   private[this] val logger = Logger("sms1pay")
   import smsRes._
 
-  private def check[T <: BaseData](form: Form[T])(logic: (Int, String, T) => Future[JsObject]) //uid, username, data
+  private def check[T <: BaseData](form: Form[T])(
+      logic: (Int, String, T) => Future[JsObject]
+  ) //uid, username, data
   (implicit req: Request[_]): Future[JsObject] = {
-    form.bindFromRequest().fold(
-      f => {
-        logger.warn(
-          s"""${f.errors.map(e => e.key + ":" + e.messages.mkString(",")).mkString("FormError: [", ",", "]")}
-             |${req.headers.headers.map { case (k, v) => k + ":" + v }.mkString("Headers: [", ",", "]")}
+    form
+      .bindFromRequest()
+      .fold(
+        f => {
+          logger.warn(
+            s"""${f.errors
+              .map(e => e.key + ":" + e.messages.mkString(","))
+              .mkString("FormError: [", ",", "]")}
+             |${req.headers.headers
+              .map { case (k, v) => k + ":" + v }
+              .mkString("Headers: [", ",", "]")}
              |${req.uri}""".stripMargin
-        )
-        ErrSignature
-      },
-      d => d.uidOpt.fold(ErrSignature) { uid =>
-        uid2Name(uid).fold(ErrId(uid)) { username =>
-          logic(uid, username, d)
-        }
-      }
-    )
+          )
+          ErrSignature
+        },
+        d =>
+          d.uidOpt.fold(ErrSignature) { uid =>
+            uid2Name(uid).fold(ErrId(uid)) { username =>
+              logic(uid, username, d)
+            }
+          }
+      )
   }
 
   def check(implicit req: Request[_]): Future[JsObject] =
@@ -48,15 +57,23 @@ class SMS @Inject() (
       OkValid
     }
 
-  private def chargeLogic(uid: Int, username: String, d: ChargeData): Future[JsObject] =
+  private def chargeLogic(
+      uid: Int,
+      username: String,
+      d: ChargeData
+  ): Future[JsObject] =
     db.withConnection { implicit conn =>
       if (Anorm1pay.exists(d.request_id)) ErrProcessed
       else {
         Anorm1pay.insertLog(d, uid)
-        addCoin(uid, d.amount, s"Nạp Bảo qua SMS từ số ${d.msisdn} số tiền ${d.amount}")
+        addCoin(
+          uid,
+          d.amount,
+          s"Nạp Bảo qua SMS từ số ${d.msisdn} số tiền ${d.amount}"
+        )
           .map(OkCharged(username, _))
-          .andThen {
-            case Failure(e) => logger.error(d.toString, e)
+          .andThen { case Failure(e) =>
+            logger.error(d.toString, e)
           }
       }
     }

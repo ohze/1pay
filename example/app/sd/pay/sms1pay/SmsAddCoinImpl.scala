@@ -14,7 +14,8 @@ class SmsAddCoinImpl @Inject() (db: Database) extends SmsAddCoin {
   def apply(uid: Int, vnd: Int, msg: String): Future[Long] = {
     val changed = vnd * 100
     db.withConnection { implicit c =>
-      SQL"UPDATE users SET coin = coin + $changed WHERE id = $uid".executeUpdate()
+      SQL"UPDATE users SET coin = coin + $changed WHERE id = $uid"
+        .executeUpdate()
     }
     logger.info(s"add $changed for $uid - $msg")
     Future successful changed

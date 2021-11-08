@@ -24,22 +24,24 @@ import org.apache.commons.codec.digest.HmacAlgorithms.HMAC_SHA_256
   * @see [[http://developers.1pay.vn/http-apis/smsplus-charging Kiểm tra cú pháp MO]]
   */
 case class ChargeData(
-    access_key:    String,
-    amount:        Int,
-    command_code:  String,
-    error_code:    String,
+    access_key: String,
+    amount: Int,
+    command_code: String,
+    error_code: String,
     error_message: String,
-    mo_message:    String,
-    msisdn:        String,
-    request_id:    String,
-    request_time:  String,
-    signature:     String
+    mo_message: String,
+    msisdn: String,
+    request_id: String,
+    request_time: String,
+    signature: String
 ) extends BaseData {
   def checkSign(secret: String): Boolean = {
-    val s = s"access_key=$access_key&amount=$amount&command_code=$command_code&error_code=$error_code&error_message=$error_message&mo_message=$mo_message&msisdn=$msisdn&request_id=$request_id&request_time=$request_time"
+    val s =
+      s"access_key=$access_key&amount=$amount&command_code=$command_code&error_code=$error_code&error_message=$error_message&mo_message=$mo_message&msisdn=$msisdn&request_id=$request_id&request_time=$request_time"
     val hex = new HmacUtils(HMAC_SHA_256, secret).hmacHex(s)
     hex equalsIgnoreCase signature
   }
+
   /** @deprecated ứ đúng nữa - giờ VN cho chuyển mạng đổi số :D */
   lazy val telco: String = Phone2Telco(msisdn)
 }

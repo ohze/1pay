@@ -17,26 +17,34 @@ class Forms1pay @Inject() (config: Configuration) {
     */
   private val amount = number(1000, 100000)
 
-  val formCharge = Form(mapping(
-    "access_key" -> text0,
-    "amount" -> amount,
-    "command_code" -> text0,
-    "error_code" -> text0,
-    "error_message" -> text0,
-    "mo_message" -> text0,
-    "msisdn" -> text,
-    "request_id" -> text,
-    "request_time" -> text,
-    "signature" -> text0
-  )(ChargeData.apply)(ChargeData.unapply) verifying ("error.signature", _.checkSign(Secret)))
+  val formCharge = Form(
+    mapping(
+      "access_key" -> text0,
+      "amount" -> amount,
+      "command_code" -> text0,
+      "error_code" -> text0,
+      "error_message" -> text0,
+      "mo_message" -> text0,
+      "msisdn" -> text,
+      "request_id" -> text,
+      "request_time" -> text,
+      "signature" -> text0
+    )(ChargeData.apply)(
+      ChargeData.unapply
+    ) verifying ("error.signature", _.checkSign(Secret))
+  )
 
-  val formCheck = Form(mapping(
-    "access_key" -> text0,
-    "amount" -> amount,
-    "command_code" -> text0,
-    "mo_message" -> text0,
-    "msisdn" -> text,
-    "telco" -> text0,
-    "signature" -> text
-  )(CheckData.apply)(CheckData.unapply) verifying ("error.signature", _.checkSign(Secret)))
+  val formCheck = Form(
+    mapping(
+      "access_key" -> text0,
+      "amount" -> amount,
+      "command_code" -> text0,
+      "mo_message" -> text0,
+      "msisdn" -> text,
+      "telco" -> text0,
+      "signature" -> text
+    )(CheckData.apply)(
+      CheckData.unapply
+    ) verifying ("error.signature", _.checkSign(Secret))
+  )
 }
