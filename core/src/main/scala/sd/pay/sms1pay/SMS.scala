@@ -3,12 +3,12 @@ package sd.pay.sms1pay
 import javax.inject.{Inject, Singleton}
 
 import play.api.data.Form
+import play.api.data.FormBinding.Implicits.formBinding
 import play.api.db.Database
 import play.api.Logger
 import play.api.libs.json.JsObject
 import play.api.mvc.Request
 import sd.Uid2Name
-
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Failure
 
@@ -26,7 +26,7 @@ class SMS @Inject() (
 
   private def check[T <: BaseData](form: Form[T])(logic: (Int, String, T) => Future[JsObject]) //uid, username, data
   (implicit req: Request[_]): Future[JsObject] = {
-    form.bindFromRequest.fold(
+    form.bindFromRequest().fold(
       f => {
         logger.warn(
           s"""${f.errors.map(e => e.key + ":" + e.messages.mkString(",")).mkString("FormError: [", ",", "]")}

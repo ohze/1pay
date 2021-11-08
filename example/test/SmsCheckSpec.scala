@@ -121,7 +121,8 @@ class SmsCheckSpec extends PlaySpecification {
 
       implicit val req = FakeRequest(GET, s"/1pay/check?access_key=4l732pw3tjhzexml8wry&amount=5000&command_code=SD&mo_message=SD+NAP+14&msisdn=84982479988&signature=$signature&telco=vtm")
       val forms1pay = app.injector.instanceOf[Forms1pay]
-      val form = forms1pay.formCheck.bindFromRequest
+      import play.api.data.FormBinding.Implicits.formBinding
+      val form = forms1pay.formCheck.bindFromRequest()
       form.value must beSome[CheckData]
       form.errors must beEmpty
 
