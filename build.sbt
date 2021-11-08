@@ -6,8 +6,7 @@ lazy val core = projectMatrix
     libraryDependencies ++= Seq(
       "org.playframework.anorm" %% "anorm" % "2.6.10",
       "commons-codec" % "commons-codec" % "1.15",
-      "org.scalatest" %% "scalatest" % "3.1.4" % Test,
-    ) ++ play("jdbc").value,
+    ) ++ play("jdbc").value ++ scalatest("-flatspec", "-shouldmatchers"),
   )
 
 import _root_.play.sbt.PlayImport
