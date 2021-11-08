@@ -21,6 +21,7 @@ lazy val example = project
       PlayImport.specs2 % Test,
     ),
     routesGenerator := InjectedRoutesGenerator,
+    addOpensForTest(),
   )
   .dependsOn(core.finder(play28)(scala212))
 
